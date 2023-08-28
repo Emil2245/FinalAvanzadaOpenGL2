@@ -23,9 +23,9 @@ public class Cono {
     public float[] coloresAU(int n) {
         this.coloresAU = new float[n * 4];
         for (int i = 0; i < this.coloresAU.length; i++) {
-            coloresAU[i] = 0.0f;
+            coloresAU[i] = 0.5f;;
             coloresAU[i + 1] =0.5f;
-            coloresAU[i + 2] =1.0f;
+            coloresAU[i + 2] =0.5f;;
             coloresAU[i + 3] = 1.0f;
             i += 3;
         }

@@ -87,11 +87,11 @@ public class RendererFigurasPruebas implements GLSurfaceView.Renderer {
         transladar(0,0,-2);
         pushMatrix();
         rotar(1,1,1,rotacion);
-        //cilindro.dibujar(new GLES20());
+            escalar(0.5f,0.5f,0.5f);
         cono.dibujar(gles20);
         popMatrix();
 
-        //piramide.dibujar(new GLES20());
+        //cilindro.dibujar(new GLES20());
 //        cilindroTextura.dibujar(new GLES20());
         //conoTextura.dibujar(new GLES20());
         pushMatrix();
@@ -99,6 +99,12 @@ public class RendererFigurasPruebas implements GLSurfaceView.Renderer {
             rotar(-1,1,-1,rotacion);
             escalar(0.5f,0.5f,0.5f);
             cubo.dibujar(new GLES20());
+        popMatrix();
+        pushMatrix();
+            transladar(0,4,0);
+            rotar(-1,1,-1,rotacion);
+            escalar(0.5f,0.5f,0.5f);
+            piramide.dibujar(new GLES20());
         popMatrix();
         pushMatrix();
             transladar(0,-2,0);

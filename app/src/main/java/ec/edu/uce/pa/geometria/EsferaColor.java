@@ -90,7 +90,7 @@ public class EsferaColor {
                 colores[iColor+2] = 0.0f;
                 colores[iColor+3] = 1.0f;
 
-                colores[iColor+4] = 0.5f;
+                colores[iColor+4] = 0.3f;
                 colores[iColor+5] = 0.5f;
                 //colores[iColor+6] = 0.0f;
                 //colores[iColor+7] = 1.0f;
@@ -113,11 +113,11 @@ public class EsferaColor {
     }
 
     public void dibujar(GLES20 gl) {
-        int vertexShader = 0;
-        int fragmentShader = 0;
+        int vertexShader;
+        int fragmentShader;
 
-        String sourceVS = null;
-        String sourceFS = null;
+        String sourceVS;
+        String sourceFS;
 
         sourceVS = Funciones.leerArchivo(R.raw.mvp_color_vertex_shader, contexto);
         vertexShader = Funciones.crearShader(gl.GL_VERTEX_SHADER, sourceVS, gl);
