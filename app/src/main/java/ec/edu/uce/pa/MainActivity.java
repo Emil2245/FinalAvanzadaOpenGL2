@@ -6,8 +6,6 @@ import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import ec.edu.uce.pa.renderes.RenderCubo;
-import ec.edu.uce.pa.renderes.RenderPrisma;
 import ec.edu.uce.pa.renderes.RendererFigurasPruebas;
 
 public class MainActivity extends AppCompatActivity {

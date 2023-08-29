@@ -5,36 +5,38 @@ import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
 import android.opengl.Matrix;
 
+import java.util.Stack;
+
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
+import ec.edu.uce.pa.R;
 import ec.edu.uce.pa.geometria.Cilindro;
 import ec.edu.uce.pa.geometria.CilindroTextura;
 import ec.edu.uce.pa.geometria.Cono;
 import ec.edu.uce.pa.geometria.ConoTextura;
 import ec.edu.uce.pa.geometria.Cuadrado;
-import ec.edu.uce.pa.geometria.Cubo;
+import ec.edu.uce.pa.geometria.CuboMulticolor;
 import ec.edu.uce.pa.geometria.EsferaColor;
 import ec.edu.uce.pa.geometria.Piramide;
 import ec.edu.uce.pa.geometria.PrismaCuadrangular;
 import ec.edu.uce.pa.geometria.PrismaTriangular;
+import ec.edu.uce.pa.utilidades.Funciones;
 
 public class RendererFigurasPruebas implements GLSurfaceView.Renderer {
     private Cilindro cilindro;
     private CilindroTextura cilindroTextura;
     private Cono cono;
     private ConoTextura conoTextura;
-    private Cubo cubo;
+    private CuboMulticolor cuboMulticolor;
     private Cuadrado cuadrado;
     private EsferaColor elipsoide, esfera;
     private Piramide piramide;
     private PrismaCuadrangular prismaCuadrangular;
     private PrismaTriangular prismaTriangular;
     private Context context;
-    private int [] arrayTextura = new int[1];
-    private static float[] stackModelo = new float[16];
-    private static float[] stackVista = new float[16];
-    private static float[] stackProyeccion = new float[16];
+    private int[] arrayTextura = new int[1];
+    private Stack<float[]> matrizModeloStack = new Stack <>();
     private float[] matrizProyeccion = new float[16];
     private float[] matrizModelo = new float[16];
     private float[] matrizVista = new float[16];
@@ -43,22 +45,22 @@ public class RendererFigurasPruebas implements GLSurfaceView.Renderer {
 
     public RendererFigurasPruebas(Context contexto) {
         this.context = contexto;
-        cilindro= new Cilindro(20, 20, 1, 2, contexto, matrizProyeccion,
-                matrizVista,matrizModelo);
-        cilindroTextura= new CilindroTextura(20, 20, 1, 2, contexto,
-                matrizProyeccion, matrizVista,matrizModelo);
-        cono=new Cono(20,1,2,contexto,matrizProyeccion,matrizVista,matrizModelo);
-        conoTextura=new ConoTextura(20,1,2,contexto,matrizProyeccion,matrizVista,
+        cilindro = new Cilindro(20, 20, 1, 2, contexto, matrizProyeccion,
+                matrizVista, matrizModelo);
+        cilindroTextura = new CilindroTextura(20, 20, 1, 2, contexto,
+                matrizProyeccion, matrizVista, matrizModelo);
+        cono = new Cono(20, 1, 2, contexto, matrizProyeccion, matrizVista, matrizModelo);
+        conoTextura = new ConoTextura(10, 1, 2, contexto, matrizProyeccion, matrizVista,
                 matrizModelo);
-        piramide= new Piramide(context,matrizProyeccion,matrizVista,matrizModelo);
-        elipsoide=new EsferaColor(20, 20, 1, 2.5f, contexto,
+        piramide = new Piramide(context, matrizProyeccion, matrizVista, matrizModelo);
+        elipsoide = new EsferaColor(20, 20, 1, 2.5f, contexto,
                 matrizProyeccion, matrizVista, matrizModelo);
-        esfera=new EsferaColor(20, 20, 1, 1, contexto,
+        esfera = new EsferaColor(20, 20, 1, 1, contexto,
                 matrizProyeccion, matrizVista, matrizModelo);
-        cubo=new Cubo(context, matrizProyeccion, matrizVista, matrizModelo);
-        cuadrado = new Cuadrado(contexto,matrizProyeccion,matrizVista,matrizModelo);
-        prismaCuadrangular= new PrismaCuadrangular(context,matrizProyeccion,matrizVista,matrizModelo);
-        prismaTriangular=new PrismaTriangular(context,matrizProyeccion,matrizVista,matrizModelo);
+        cuboMulticolor = new CuboMulticolor(context, matrizProyeccion, matrizVista, matrizModelo);
+        cuadrado = new Cuadrado(contexto, matrizProyeccion, matrizVista, matrizModelo);
+        prismaCuadrangular = new PrismaCuadrangular(context, matrizProyeccion, matrizVista, matrizModelo);
+        prismaTriangular = new PrismaTriangular(context, matrizProyeccion, matrizVista, matrizModelo);
 
     }
 
@@ -66,7 +68,7 @@ public class RendererFigurasPruebas implements GLSurfaceView.Renderer {
     public void onSurfaceCreated(GL10 gl, EGLConfig eglConfig) {
         gl.glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
         gl.glEnable(gl.GL_DEPTH_TEST);
-
+        arrayTextura= Funciones.habilitarTexturas(new GLES20(),1);
 
     }
 
@@ -84,40 +86,36 @@ public class RendererFigurasPruebas implements GLSurfaceView.Renderer {
         GLES20 gles20 = new GLES20();
         Matrix.setIdentityM(matrizModelo, 0);
 
-        transladar(0,0,-2);
+
+        transladar(0, 0, -2);
         pushMatrix();
-        rotar(1,1,1,rotacion);
-            escalar(0.5f,0.5f,0.5f);
-        cono.dibujar(gles20);
+        rotar(1, 1, 1, rotacion);
+        escalar(0.5f, 0.5f, 0.5f);
+//        Funciones.cargarImagenesTexturas(new GLES20(),context,
+//                R.drawable.callisto,0,arrayTextura);
+        conoTextura.dibujar(gles20);
         popMatrix();
 
-        //cilindro.dibujar(new GLES20());
-//        cilindroTextura.dibujar(new GLES20());
-        //conoTextura.dibujar(new GLES20());
         pushMatrix();
-            transladar(0,2,0);
-            rotar(-1,1,-1,rotacion);
-            escalar(0.5f,0.5f,0.5f);
-            cubo.dibujar(new GLES20());
+        transladar(0, 2, 0);
+        rotar(-1, 1, -1, rotacion);
+        escalar(0.5f, 0.5f, 0.5f);
+        cuboMulticolor.dibujar(gles20);
         popMatrix();
         pushMatrix();
-            transladar(0,4,0);
-            rotar(-1,1,-1,rotacion);
-            escalar(0.5f,0.5f,0.5f);
-            piramide.dibujar(new GLES20());
+        transladar(0, 4, 0);
+        rotar(-1, 1, -1, rotacion);
+        escalar(0.5f, 0.5f, 0.5f);
+        piramide.dibujar(gles20);
         popMatrix();
         pushMatrix();
-            transladar(0,-2,0);
-            rotar(-1,1,-1,rotacion);
-            cuadrado.dibujar(new GLES20());
+        transladar(0, -2, 0);
+        rotar(-1, 1, -1, rotacion);
+        cuadrado.dibujar(gles20);
         popMatrix();
-//        elipsoide.dibujar(new GLES20());
-//        esfera.dibujar(new GLES20());
-//        prismaTriangular.dibujar(new GLES20());
-//        prismaCuadrangular.dibujar(new GLES20());
-
         rotacion += 2.5f;
     }
+
     private void invocarFrustrum() {
         Matrix.frustumM(matrizProyeccion, 0, -relacionAspecto, relacionAspecto,
                 -1, 1, 1, 30);
@@ -142,18 +140,17 @@ public class RendererFigurasPruebas implements GLSurfaceView.Renderer {
         invocarMatrices();
         Matrix.setIdentityM(matrizModelo, 0);
     }
-
-
-    public void pushMatrix() {
-        System.arraycopy(matrizModelo, 0, stackModelo, 0, stackModelo.length);
-        System.arraycopy(matrizVista, 0, stackVista, 0, stackVista.length);
-        System.arraycopy(matrizProyeccion, 0, stackProyeccion, 0, stackProyeccion.length);
+    private void pushMatrix() {
+        float[] matrizCopia = new float[16];
+        System.arraycopy(matrizModelo, 0, matrizCopia, 0, 16);
+        matrizModeloStack.push(matrizCopia);
     }
 
-    public void popMatrix() {
-        System.arraycopy(stackModelo, 0, matrizModelo, 0, matrizModelo.length);
-        System.arraycopy(stackVista, 0, matrizVista, 0, matrizVista.length);
-        System.arraycopy(stackProyeccion, 0, matrizProyeccion, 0, matrizProyeccion.length);
+    private void popMatrix() {
+        if (!matrizModeloStack.isEmpty()) {
+            float[] matrizCopia = matrizModeloStack.pop();
+            System.arraycopy(matrizCopia, 0, matrizModelo, 0, 16);
+        }
     }
 
     private void rotar(float x, float y, float z, float anguloRot) {

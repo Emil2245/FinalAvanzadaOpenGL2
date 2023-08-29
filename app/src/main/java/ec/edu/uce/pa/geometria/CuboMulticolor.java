@@ -10,7 +10,7 @@ import ec.edu.uce.pa.R;
 import ec.edu.uce.pa.utilidades.Funciones;
 
 
-public class Cubo {
+public class CuboMulticolor {
     private FloatBuffer bufferVertices;
     private FloatBuffer bufferColores;
 
@@ -24,7 +24,7 @@ public class Cubo {
     private ByteBuffer bufferIndice;
 
     //Necesitamos las franjas y cortes que vamos a dibujar
-    public Cubo( Context context, float[] mProyeccion, float[] mVista, float[] mModelo) {
+    public CuboMulticolor(Context context, float[] mProyeccion, float[] mVista, float[] mModelo) {
         this.context = context;
         this.mProyeccion = mProyeccion;
         this.mVista = mVista;

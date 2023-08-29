@@ -8,15 +8,11 @@ import android.opengl.Matrix;
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
-import ec.edu.uce.pa.R;
-import ec.edu.uce.pa.geometria.Cubo;
-import ec.edu.uce.pa.geometria.Esfera;
-import ec.edu.uce.pa.geometria.Estrellas;
+import ec.edu.uce.pa.geometria.CuboMulticolor;
 import ec.edu.uce.pa.geometria.PuntosAstro;
-import ec.edu.uce.pa.utilidades.Funciones;
 
 public class RenderCubo implements GLSurfaceView.Renderer {
-    private Cubo cubo;
+    private CuboMulticolor cuboMulticolor;
     private Context context;
 
     private PuntosAstro puntosAstro;
@@ -32,7 +28,7 @@ public class RenderCubo implements GLSurfaceView.Renderer {
     public RenderCubo(Context contexto) {
         this.context = contexto;
         //circulo = new Circulo();
-        cubo = new Cubo(contexto,matrizProyeccion,matrizVista,matrizModelo);
+        cuboMulticolor = new CuboMulticolor(contexto,matrizProyeccion,matrizVista,matrizModelo);
 
     }
 
@@ -71,7 +67,7 @@ public class RenderCubo implements GLSurfaceView.Renderer {
         translate(0,0,-5f);
         rotate(0,1,0,rotacion);
 
-        cubo.dibujar(new GLES20());
+        cuboMulticolor.dibujar(new GLES20());
 
 
         rotacion += 0.8f;
