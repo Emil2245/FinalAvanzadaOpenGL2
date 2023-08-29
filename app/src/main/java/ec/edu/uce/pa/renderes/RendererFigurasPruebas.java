@@ -113,6 +113,7 @@ public class RendererFigurasPruebas implements GLSurfaceView.Renderer {
         rotar(-1, 1, -1, rotacion);
         cuadrado.dibujar(gles20);
         popMatrix();
+
         rotacion += 2.5f;
     }
 

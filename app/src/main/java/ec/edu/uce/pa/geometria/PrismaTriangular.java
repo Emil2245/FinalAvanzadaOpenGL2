@@ -76,33 +76,6 @@ public class PrismaTriangular {
                 0.0f, -1.0f, -1.0f,  // 15 //23
 
         };
-        /*float [] colores = {
-//Frontal Azul
-                0.0f, 0.0f, 1.0f, 1.0f,
-                0.0f, 0.0f, 1.0f, 1.0f,
-                0.0f, 0.0f, 1.0f, 1.0f,
-                0.0f, 0.0f, 1.0f, 1.0f,
-//Izquierda Celeste
-                0.0f, 1.0f, 0.62f, 1.0f,
-                0.0f, 1.0f, 0.62f, 1.0f,
-                0.0f, 1.0f, 0.62f, 1.0f,
-                0.0f, 1.0f, 0.62f, 1.0f,
-//Derecha Verde
-                0.0f, 0.5f, 0.25f, 1.0f,
-                0.0f, 0.5f, 0.25f, 1.0f,
-                0.0f, 0.5f, 0.25f, 1.0f,
-                0.0f, 0.5f, 0.25f, 1.0f,
-//Superior Cafe
-                0.50f, 0.25f, 0.0f, 1.0f,
-                0.50f, 0.25f, 0.0f, 1.0f,
-                0.50f, 0.25f, 0.0f, 1.0f,
-                0.50f, 0.25f, 0.0f, 1.0f,
-//Inferior Rojo
-                1.0f, 0.0f, 0.0f, 1.0f,
-                1.0f, 0.0f, 0.0f, 1.0f,
-                1.0f, 0.0f, 0.0f, 1.0f,
-                1.0f, 0.0f, 0.0f, 1.0f
-        };*/
         byte [] indices = {
 
                 0, 2, 1,

@@ -12,15 +12,15 @@ import ec.edu.uce.pa.utilidades.Funciones;
 
 
 public class CuboUnicolor {
-    private FloatBuffer bufferVertices;
-    private FloatBuffer bufferColores;
+    private final FloatBuffer bufferVertices;
+    private final FloatBuffer bufferColores;
 
     private final static int comPorVertices = 3;
 
-    private Context context;
-    private float[] mProyeccion;
-    private float[] mVista;
-    private float[] mModelo;
+    private final Context context;
+    private final float[] mProyeccion;
+    private final float[] mVista;
+    private final float[] mModelo;
 
     private ByteBuffer bufferIndice;
 
@@ -111,59 +111,59 @@ public class CuboUnicolor {
         String sourceFs = null;
 
         sourceVs = Funciones.leerArchivo(R.raw.colr_vertex_shader, context);
-        vertexShader = Funciones.crearShader(gl.GL_VERTEX_SHADER, sourceVs, gl);
+        vertexShader = Funciones.crearShader(GLES20.GL_VERTEX_SHADER, sourceVs, gl);
 
         //        Configuracion Fragment Shader
         sourceFs = Funciones.leerArchivo(R.raw.color_fragment_shader, context);
-        fragmentShader = Funciones.crearShader(gl.GL_FRAGMENT_SHADER, sourceFs, gl);
+        fragmentShader = Funciones.crearShader(GLES20.GL_FRAGMENT_SHADER, sourceFs, gl);
 
         int programa = Funciones.crearPrograma(vertexShader, fragmentShader, gl);
-        gl.glUseProgram(programa);
+        GLES20.glUseProgram(programa);
 
 //        11. Lectura de parametros desde el renderer
-        int idVertexShader = gl.glGetAttribLocation(programa, "posVertexShader");
-        gl.glVertexAttribPointer(idVertexShader,
+        int idVertexShader = GLES20.glGetAttribLocation(programa, "posVertexShader");
+        GLES20.glVertexAttribPointer(idVertexShader,
                 comPorVertices,
-                gl.GL_FLOAT,
+                GLES20.GL_FLOAT,
                 false,
                 0,
                 bufferVertices);
-        gl.glEnableVertexAttribArray(idVertexShader);
+        GLES20.glEnableVertexAttribArray(idVertexShader);
 
 //        12. Lectura de parametros desde el renderer Fragment Shader
 
-        int idFragmentShader = gl.glGetAttribLocation(programa, "colorVertex");
-        gl.glVertexAttribPointer(idFragmentShader,
+        int idFragmentShader = GLES20.glGetAttribLocation(programa, "colorVertex");
+        GLES20.glVertexAttribPointer(idFragmentShader,
                 4,
-                gl.GL_FLOAT,
+                GLES20.GL_FLOAT,
                 false,
                 0,
                 bufferColores);
-        gl.glEnableVertexAttribArray(idFragmentShader);
+        GLES20.glEnableVertexAttribArray(idFragmentShader);
 
-        int idPosMatrixProy = gl.glGetUniformLocation(programa,
+        int idPosMatrixProy = GLES20.glGetUniformLocation(programa,
                 "matrizProjection");
-        gl.glUniformMatrix4fv(idPosMatrixProy, 1,
+        GLES20.glUniformMatrix4fv(idPosMatrixProy, 1,
                 false, mProyeccion, 0);
 
-        int idPosMatrixview = gl.glGetUniformLocation(programa,
+        int idPosMatrixview = GLES20.glGetUniformLocation(programa,
                 "matrizView");
-        gl.glUniformMatrix4fv(idPosMatrixview, 1,
+        GLES20.glUniformMatrix4fv(idPosMatrixview, 1,
                 false, mVista, 0);
 
-        int idPosMatrixModel = gl.glGetUniformLocation(programa,
+        int idPosMatrixModel = GLES20.glGetUniformLocation(programa,
                 "matrizModel");
-        gl.glUniformMatrix4fv(idPosMatrixModel, 1,
+        GLES20.glUniformMatrix4fv(idPosMatrixModel, 1,
                 false, mModelo, 0);
 
 
-        gl.glFrontFace(gl.GL_CW);
+        GLES20.glFrontFace(GLES20.GL_CW);
 
-        gl.glDrawArrays(gl.GL_TRIANGLES, 0, 36);
+        GLES20.glDrawArrays(GLES20.GL_TRIANGLES, 0, 36);
 
-        gl.glFrontFace(gl.GL_CCW);
-        gl.glDisableVertexAttribArray(idVertexShader);
-        gl.glDisableVertexAttribArray(idFragmentShader);
+        GLES20.glFrontFace(GLES20.GL_CCW);
+        GLES20.glDisableVertexAttribArray(idVertexShader);
+        GLES20.glDisableVertexAttribArray(idFragmentShader);
 
         Funciones.liberarShader(programa, vertexShader, fragmentShader);
 
