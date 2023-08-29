@@ -10,13 +10,13 @@ import java.util.Stack;
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
-import ec.edu.uce.pa.R;
 import ec.edu.uce.pa.geometria.Cilindro;
 import ec.edu.uce.pa.geometria.CilindroTextura;
 import ec.edu.uce.pa.geometria.Cono;
 import ec.edu.uce.pa.geometria.ConoTextura;
 import ec.edu.uce.pa.geometria.Cuadrado;
 import ec.edu.uce.pa.geometria.CuboMulticolor;
+import ec.edu.uce.pa.geometria.Dona;
 import ec.edu.uce.pa.geometria.EsferaColor;
 import ec.edu.uce.pa.geometria.Piramide;
 import ec.edu.uce.pa.geometria.PrismaCuadrangular;
@@ -30,18 +30,22 @@ public class RendererFigurasPruebas implements GLSurfaceView.Renderer {
     private ConoTextura conoTextura;
     private CuboMulticolor cuboMulticolor;
     private Cuadrado cuadrado;
+    private Dona dona;
     private EsferaColor elipsoide, esfera;
     private Piramide piramide;
     private PrismaCuadrangular prismaCuadrangular;
     private PrismaTriangular prismaTriangular;
     private Context context;
     private int[] arrayTextura = new int[1];
-    private Stack<float[]> matrizModeloStack = new Stack <>();
+    private Stack<float[]> matrizModeloStack = new Stack<>();
     private float[] matrizProyeccion = new float[16];
     private float[] matrizModelo = new float[16];
     private float[] matrizVista = new float[16];
     private float[] matrizTemp = new float[16];
     private float relacionAspecto, rotacion = 0.0f;
+    private float[] colorAzul = {0.0f, 0.0f, 1.0f, 1.0f};
+    private float[] colorRojo = {1.0f, 0.0f, 0.0f, 1.0f};
+    private float[] color = {0.0f, 1.0f, 0.0f, 1.0f};
 
     public RendererFigurasPruebas(Context contexto) {
         this.context = contexto;
@@ -61,6 +65,7 @@ public class RendererFigurasPruebas implements GLSurfaceView.Renderer {
         cuadrado = new Cuadrado(contexto, matrizProyeccion, matrizVista, matrizModelo);
         prismaCuadrangular = new PrismaCuadrangular(context, matrizProyeccion, matrizVista, matrizModelo);
         prismaTriangular = new PrismaTriangular(context, matrizProyeccion, matrizVista, matrizModelo);
+        dona = new Dona(20, 20, 1.0f, 0.7f, contexto, matrizProyeccion, matrizVista, matrizModelo, color);
 
     }
 
@@ -68,7 +73,7 @@ public class RendererFigurasPruebas implements GLSurfaceView.Renderer {
     public void onSurfaceCreated(GL10 gl, EGLConfig eglConfig) {
         gl.glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
         gl.glEnable(gl.GL_DEPTH_TEST);
-        arrayTextura= Funciones.habilitarTexturas(new GLES20(),1);
+        arrayTextura = Funciones.habilitarTexturas(new GLES20(), 1);
 
     }
 
@@ -106,7 +111,7 @@ public class RendererFigurasPruebas implements GLSurfaceView.Renderer {
         transladar(0, 4, 0);
         rotar(-1, 1, -1, rotacion);
         escalar(0.5f, 0.5f, 0.5f);
-        piramide.dibujar(gles20);
+        dona.dibujar(gles20);
         popMatrix();
         pushMatrix();
         transladar(0, -2, 0);
@@ -141,6 +146,7 @@ public class RendererFigurasPruebas implements GLSurfaceView.Renderer {
         invocarMatrices();
         Matrix.setIdentityM(matrizModelo, 0);
     }
+
     private void pushMatrix() {
         float[] matrizCopia = new float[16];
         System.arraycopy(matrizModelo, 0, matrizCopia, 0, 16);
