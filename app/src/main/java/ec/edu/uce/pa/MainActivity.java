@@ -6,7 +6,7 @@ import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import ec.edu.uce.pa.renderes.RendererFigurasPruebas;
+import ec.edu.uce.pa.renderes.RendererFigurasPrueba;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -19,24 +19,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         view = new GLSurfaceView(this);
         view.setEGLContextClientVersion(2);
-
-        //render = new RenderCono(this);
-        //render = new RenderCuboColores(this);
-        render = new RendererFigurasPruebas(this);
-        //render = new RenderCubo(this);
-        //render = new RenderEsfera(this);
-        //render = new RenderHexagonoProyFP(this);
-
-//        render = new RenderHexagonoProyFP(this);
-        //render = new RenderHexagonoTextura(this);
-       // render = new RenderHexagonoStride(this);
-       // render = new RenderHexagonoProyO(this);
-        //render = new RenderHexagonoColor(this);
-        //render = new RenderHexagono(this);
-       // render = new RenderPunto();
+        render = new RendererFigurasPrueba(this);
 
         view.setRenderer(render);
         setContentView(view);

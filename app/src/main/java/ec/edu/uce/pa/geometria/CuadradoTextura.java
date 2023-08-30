@@ -15,18 +15,20 @@ import ec.edu.uce.pa.R;
 
 public class CuadradoTextura {
 
-    private FloatBuffer bufferVertices;
-    private ByteBuffer bufferIndice;
-    private FloatBuffer bufferTexturas;
+    private final FloatBuffer bufferVertices;
+    private final ByteBuffer bufferIndice;
+    private final FloatBuffer bufferTexturas;
     private static final int byteFlotante = 4;
     private static final int compPorVertice = 2;
     private static final int compPorText = 2;
     private final static int STRIDE = (compPorVertice + compPorText) * byteFlotante;
     private int[] arrayTexturas;
 
-    private float[] matrizProyeccion,matrizVista, matrizModelo;
+    private final float[] matrizProyeccion;
+    private final float[] matrizVista;
+    private final float[] matrizModelo;
 
-    private Context contexto;
+    private final Context contexto;
 
     public CuadradoTextura(Context contexto, float[] matrizProyeccion, float[] matrizVista,
                            float[] matrizModelo) {
@@ -64,69 +66,69 @@ public class CuadradoTextura {
         int fragmentShader = 0;
 
         String sourceVS = Funciones.leerArchivo(R.raw.mvp_textura_vertex_shader, contexto);
-        vertexShader = Funciones.crearShader(gl.GL_VERTEX_SHADER, sourceVS, gl);
+        vertexShader = Funciones.crearShader(GLES20.GL_VERTEX_SHADER, sourceVS, gl);
 
         String sourceFS = Funciones.leerArchivo(R.raw.textura_fragment_shader, contexto);
-        fragmentShader = Funciones.crearShader(gl.GL_FRAGMENT_SHADER, sourceFS, gl);
+        fragmentShader = Funciones.crearShader(GLES20.GL_FRAGMENT_SHADER, sourceFS, gl);
 
         int programa = Funciones.crearPrograma(vertexShader, fragmentShader, gl);
-        gl.glUseProgram(programa);
+        GLES20.glUseProgram(programa);
 
         bufferVertices.position(0);
-        int idVertexShader = gl.glGetAttribLocation(programa, "posVertexShader");
-        gl.glVertexAttribPointer(idVertexShader,
+        int idVertexShader = GLES20.glGetAttribLocation(programa, "posVertexShader");
+        GLES20.glVertexAttribPointer(idVertexShader,
                 compPorVertice,
-                gl.GL_FLOAT,
+                GLES20.GL_FLOAT,
                 false,
                 0,
                 bufferVertices);
-        gl.glEnableVertexAttribArray(idVertexShader);
+        GLES20.glEnableVertexAttribArray(idVertexShader);
 
         bufferTexturas.position(0);
-        int idFragmentShader = gl.glGetAttribLocation(programa, "texturaVertex");
-        gl.glVertexAttribPointer(idFragmentShader,
+        int idFragmentShader = GLES20.glGetAttribLocation(programa, "texturaVertex");
+        GLES20.glVertexAttribPointer(idFragmentShader,
                 compPorText,
-                gl.GL_FLOAT,
+                GLES20.GL_FLOAT,
                 false,
                 0,
                 bufferTexturas);
-        gl.glEnableVertexAttribArray(idFragmentShader);
+        GLES20.glEnableVertexAttribArray(idFragmentShader);
 
-        int idPosMatrizProy = gl.glGetUniformLocation(programa, "matrizProjection");
-        gl.glUniformMatrix4fv(idPosMatrizProy, 1, false, matrizProyeccion, 0);
+        int idPosMatrizProy = GLES20.glGetUniformLocation(programa, "matrizProjection");
+        GLES20.glUniformMatrix4fv(idPosMatrizProy, 1, false, matrizProyeccion, 0);
 
-        int idPosMatrizView = gl.glGetUniformLocation(programa, "matrizView");
-        gl.glUniformMatrix4fv(idPosMatrizView, 1, false, matrizVista, 0);
+        int idPosMatrizView = GLES20.glGetUniformLocation(programa, "matrizView");
+        GLES20.glUniformMatrix4fv(idPosMatrizView, 1, false, matrizVista, 0);
 
-        int idPosMatrizModel = gl.glGetUniformLocation(programa, "matrizModel");
-        gl.glUniformMatrix4fv(idPosMatrizModel, 1, false, matrizModelo, 0);
+        int idPosMatrizModel = GLES20.glGetUniformLocation(programa, "matrizModel");
+        GLES20.glUniformMatrix4fv(idPosMatrizModel, 1, false, matrizModelo, 0);
 
-        gl.glFrontFace(gl.GL_CW);
+        GLES20.glFrontFace(GLES20.GL_CW);
 
-        gl.glBindTexture(gl.GL_TEXTURE_2D,arrayTexturas[indiceTextura]);
-        gl.glDrawElements(gl.GL_TRIANGLES, 6, gl.GL_UNSIGNED_BYTE, bufferIndice);
+        GLES20.glBindTexture(GLES20.GL_TEXTURE_2D,arrayTexturas[indiceTextura]);
+        GLES20.glDrawElements(GLES20.GL_TRIANGLES, 6, GLES20.GL_UNSIGNED_BYTE, bufferIndice);
 
 
-        gl.glFrontFace(gl.GL_CCW);
+        GLES20.glFrontFace(GLES20.GL_CCW);
 
-        gl.glDisableVertexAttribArray(idVertexShader);
-        gl.glDisableVertexAttribArray(idFragmentShader);
+        GLES20.glDisableVertexAttribArray(idVertexShader);
+        GLES20.glDisableVertexAttribArray(idFragmentShader);
 
         Funciones.liberarShader(programa, vertexShader, fragmentShader);
     }
     public void habilitarTexturasFondo(GLES20 gl,int indice){
-        gl.glEnable(gl.GL_DEPTH_TEST);
-        gl.glEnable(gl.GL_TEXTURE_2D);
+        GLES20.glEnable(GLES20.GL_DEPTH_TEST);
+        GLES20.glEnable(GLES20.GL_TEXTURE_2D);
         arrayTexturas = new int[indice];
-        gl.glGenTextures(indice, arrayTexturas, 0);
+        GLES20.glGenTextures(indice, arrayTexturas, 0);
     }
 
     public void cargarImagenesTexturaFondo(GLES20 gl, Context contexto, int idImagen, int indice){
         Bitmap bitmap = BitmapFactory.decodeResource(contexto.getResources(), idImagen);
-        gl.glBindTexture(gl.GL_TEXTURE_2D, arrayTexturas[indice]);
-        GLUtils.texImage2D(gl.GL_TEXTURE_2D, 0, bitmap, 0);
-        gl.glTexParameterf(gl.GL_TEXTURE_2D, gl.GL_TEXTURE_MAG_FILTER, gl.GL_LINEAR);
-        gl.glTexParameterf(gl.GL_TEXTURE_2D, gl.GL_TEXTURE_MIN_FILTER, gl.GL_LINEAR);
+        GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, arrayTexturas[indice]);
+        GLUtils.texImage2D(GLES20.GL_TEXTURE_2D, 0, bitmap, 0);
+        GLES20.glTexParameterf(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MAG_FILTER, GLES20.GL_LINEAR);
+        GLES20.glTexParameterf(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MIN_FILTER, GLES20.GL_LINEAR);
         bitmap.recycle();
     }
 }
